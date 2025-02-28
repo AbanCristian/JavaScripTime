@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const originalDOM = document.body.cloneNode(true);
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
     const postForm = document.getElementById('post-form');
@@ -11,7 +12,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const postData = document.getElementById('post-container');
     const postList = document.getElementById('post-list');  
 
+    const restoreDOM = () => {
+        console.warn("⚠️ Intento de manipulación del DOM detectado. 🔒 Protección del DOM activada. Restaurando...");
+        document.body.replaceWith(originalDOM.cloneNode(true));
+    }
+
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            if (mutation.type === "childList" || mutation.type === "attributes") {
+                restoreDOM();
+            }
+        });
+    });
     
+    observer.observe(document.body, {
+        childList: true,
+        attributes: true,
+        subtree: true
+    });
+
+
     const validateUsername = (username) =>{
         const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
         return usernameRegex.test(username);
