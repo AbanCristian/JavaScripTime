@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
         return usernameRegex.test(username);
     }
-    
+
     const getUsers = () => {
         return JSON.parse(localStorage.getItem('users')) || [];
     };
@@ -89,6 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
         users.push({ username: newUsername, password: newPassword });
         saveUsers(users);
         alert('Usuario registrado con éxito. Ahora puedes iniciar sesión.');
+        document.getElementById('new-username').value = '';
+        document.getElementById('new-password').value = '';
         showLoginContainer();
     });
 
