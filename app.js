@@ -9,24 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginData = document.getElementById('login-container');
     const registerData = document.getElementById('register-container');
     const postData = document.getElementById('post-container');
-    const postList = document.getElementById('post-list');
+    const postList = document.getElementById('post-list');  
 
-    // Usuario administrador por defecto
-    const adminUser = { username: 'admin', password: 'admin123' };
-
-    // Recuperar usuarios desde localStorage
+    
+    const validateUsername = (username) =>{
+        const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
+        return usernameRegex.test(username);
+    }
+    
     const getUsers = () => {
-        let users = JSON.parse(localStorage.getItem('users')) || [];
-        if (!users.find(u => u.username === adminUser.username)) {
-            users.push(adminUser);
-            localStorage.setItem('users', JSON.stringify(users));
-        }
-        return users;
+        return JSON.parse(localStorage.getItem('users')) || [];
     };
     
     const saveUsers = (users) => localStorage.setItem('users', JSON.stringify(users));
 
-    // Mostrar contenedores
     const showPostContainer = () => {
         loginData.classList.add('d-none');
         registerData.classList.add('d-none');
@@ -45,10 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
         postData.classList.add('d-none');
     };
     
-    if (localStorage.getItem('loggedIn')) {
-        showPostContainer();
-    }
-
     loginForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const username = document.getElementById('username').value.trim();
@@ -80,6 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!newUsername || !newPassword) {
             alert('Por favor, completa todos los campos.');
+            return;
+        }
+
+        if (!validateUsername(newUsername)) {
+            alert('El nombre de usuario solo puede contener letras, números y guiones bajos, y debe tener entre 3 y 16 caracteres.');
             return;
         }
 
