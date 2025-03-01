@@ -27,10 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     observer.observe(document.body, {
         childList: true,
-        attributes: true,
+        
         subtree: true
     });
-
+ 
 
     const validateUsername = (username) =>{
         const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
